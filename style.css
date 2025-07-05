@@ -72,6 +72,58 @@ body {
     background: #0096c7;
 }
 
+#game-area {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#grid {
+    display: grid;
+    gap: 4px;
+    margin-bottom: 2rem;
+}
+
+.grid-cell {
+    width: 40px;
+    height: 40px;
+    background: #e0e0e0;
+    border: 1px solid #bbb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    border-radius: 4px;
+}
+
+.grid-cell.start { background: #ffe066; }
+.grid-cell.end { background: #90ee90; }
+.grid-cell.obstacle { background: #aaa; }
+.grid-cell.filter { background: #48cae4; }
+
+.draggable-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.draggable {
+    background: #fff;
+    border: 2px solid #00b4d8;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    cursor: grab;
+    font-weight: bold;
+    user-select: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    transition: background 0.2s;
+}
+
+.draggable:active {
+    background: #caf0f8;
+}
+
 @media (max-width: 500px) {
     .game-container {
         max-width: 95vw;
