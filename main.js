@@ -1,4 +1,5 @@
 let currentLevel = null; // Store the loaded level for updates
+let originalLevel = null; // Store the original level for resets
 
 document.querySelector('.start-btn').addEventListener('click', async () => {
     document.querySelector('.start-btn').style.display = 'none';
@@ -8,19 +9,25 @@ document.querySelector('.start-btn').addEventListener('click', async () => {
     const response = await fetch('assets/levels/lvl_1.json');
     const level = await response.json();
     currentLevel = level;
+    originalLevel = JSON.parse(JSON.stringify(level)); // Deep copy for reset
     renderGrid(level);
 });
 
 // Reset does the same thing as start until there's logic for multiple levels.
-document.querySelector('.reset-btn').addEventListener('click', async () => {
-    document.querySelector('.reset-btn').style.display = 'none';
-    document.getElementById('game-area').style.display = 'flex';
+document.getElementById('reset-btn').addEventListener('click', function() {
+    // Remove this line:
+    // document.getElementById('reset-btn').style.display = 'none';
 
-    // Example: Load grid config from JSON
-    const response = await fetch('assets/levels/lvl_1.json');
-    const level = await response.json();
-    currentLevel = level;
-    renderGrid(level);
+    // Spin animation (optional)
+    this.classList.remove('spin');
+    void this.offsetWidth;
+    this.classList.add('spin');
+
+    // Reset logic
+    if (originalLevel) {
+        currentLevel = JSON.parse(JSON.stringify(originalLevel));
+        renderGrid(currentLevel);
+    }
 });
 
 // Make pieces draggable
@@ -41,8 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function renderGrid(level) {
     const grid = document.getElementById('grid');
     grid.innerHTML = '';
-    grid.style.gridTemplateColumns = `repeat(${level.width}, 1fr)`;
-    grid.style.gridTemplateRows = `repeat(${level.height}, 1fr)`;
+    grid.style.gridTemplateColumns = `repeat(${level.width}, 40px)`;
+    grid.style.gridTemplateRows = `repeat(${level.height}, 40px)`;
 
     for (let y = 0; y < level.height; y++) {
         for (let x = 0; x < level.width; x++) {
@@ -169,8 +176,8 @@ function evaluateLevel() {
 
     // Simulate water flow
     let visited = Array.from({ length: level.height }, () => Array(level.width).fill(false));
-    let isClean = true;
-    let success = false;
+    let reachedEnd = false;
+    let wasCleanAtEnd = false;
     let failed = false;
 
     function traverse(x, y, clean) {
@@ -188,8 +195,8 @@ function evaluateLevel() {
             return;
         }
         if (cell === 'end') {
-            if (clean) success = true;
-            else failed = true;
+            reachedEnd = true;
+            wasCleanAtEnd = clean;
             return;
         }
         // Pollution logic
@@ -223,12 +230,45 @@ function evaluateLevel() {
 
     traverse(startX, startY, true);
 
-    if (success && !failed) {
+    if (reachedEnd && wasCleanAtEnd) {
         resultDiv.textContent = 'Pass';
+        showVictoryModal();
+    } else if (reachedEnd && !wasCleanAtEnd) {
+        resultDiv.textContent = 'Polluted';
     } else {
         resultDiv.textContent = 'Fail';
     }
 }
+
+// Show the victory modal
+function showVictoryModal() {
+    const modal = document.getElementById('victory-modal');
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+
+    // Confetti (using canvas-confetti)
+    if (window.confetti) {
+        const canvas = document.getElementById('confetti-canvas');
+        canvas.width = modal.offsetWidth;
+        canvas.height = modal.offsetHeight;
+        const myConfetti = window.confetti.create(canvas, { resize: true, useWorker: true });
+        myConfetti({
+            particleCount: 120,
+            spread: 90,
+            origin: { y: 0.6 }
+        });
+    }
+}
+
+// Hide the victory modal
+function hideVictoryModal() {
+    const modal = document.getElementById('victory-modal');
+    modal.classList.remove('active');
+    setTimeout(() => { modal.style.display = 'none'; }, 400);
+}
+
+// Next Level button closes modal for now
+document.getElementById('next-level-btn').addEventListener('click', hideVictoryModal);
 
 document.getElementById('submit-btn').addEventListener('click', function() {
     const btn = this;
@@ -238,9 +278,17 @@ document.getElementById('submit-btn').addEventListener('click', function() {
 });
 
 document.getElementById('reset-btn').addEventListener('click', function() {
-    const btn = this;
-    btn.classList.remove('spin');
-    void btn.offsetWidth; // Force reflow for restart
-    btn.classList.add('spin');
-    // ...reset logic...
+    // Remove this line:
+    // document.getElementById('reset-btn').style.display = 'none';
+
+    // Spin animation (optional)
+    this.classList.remove('spin');
+    void this.offsetWidth;
+    this.classList.add('spin');
+
+    // Reset logic
+    if (originalLevel) {
+        currentLevel = JSON.parse(JSON.stringify(originalLevel));
+        renderGrid(currentLevel);
+    }
 });

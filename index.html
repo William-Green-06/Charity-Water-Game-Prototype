@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Charity Water Game Prototype</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
     <header class="main-header">
@@ -30,7 +31,7 @@
                             <img src="assets/ui/charity_icon.png" alt="Submit" class="submit-icon" />
                         </button>
                         <div class="submit-label">Submit</div>
-                        <div id="submit-result"></div>
+                        <div id="result"></div>
                     </div>
                 </div>
                 <div id="controls" class="draggable-controls">
@@ -43,6 +44,15 @@
             </div>
         </div>
     </main>
+
+    <!-- Victory Modal -->
+    <div id="victory-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <canvas id="confetti-canvas"></canvas>
+            <h2 class="victory-title">Level Complete!</h2>
+            <button id="next-level-btn" class="next-btn">Next Level</button>
+        </div>
+    </div>
 </body>
 <footer>
     <script src="main.js"></script>

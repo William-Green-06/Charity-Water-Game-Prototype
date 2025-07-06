@@ -241,6 +241,21 @@ body {
 .submit-and-result {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#submit-result {
+    margin-top: 0.5rem;
+    width: 100%;
+    text-align: center;
+    /* Remove any absolute/fixed positioning if present */
+    position: static;
+}
+
+.submit-and-result {
+    display: flex;
+    flex-direction: column;
     align-items: center;      /* Ensure children are centered horizontally */
     justify-content: center;
     padding-left: 0.7rem;
@@ -408,4 +423,71 @@ button.icon-btn {
     .game-title {
         margin-bottom: 0.4rem;
     }
+}
+
+/* Victory Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 18px;
+    padding: 2.5rem 2rem 2rem 2rem;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+    text-align: center;
+    position: relative;
+    min-width: 320px;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.victory-title {
+    font-size: 2.5rem;
+    color: #00b4d8;
+    margin-bottom: 2rem;
+    margin-top: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 0.04em;
+}
+
+.next-btn {
+    padding: 0.8rem 2.2rem;
+    font-size: 1.3rem;
+    border: none;
+    border-radius: 10px;
+    background: #FFCA0A;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 1.2rem;
+    transition: background 0.2s;
+}
+
+.next-btn:hover {
+    background: #ffe066;
+}
+
+#confetti-canvas {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
 }
