@@ -57,10 +57,13 @@ body {
     position: relative;
     overflow: hidden;
     justify-content: flex-start;
+    overflow-x: hidden;        /* Prevent horizontal overflow */
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
 }
 
 .game-title {
-    margin-bottom: 1.5rem;
+    margin-bottom: 4px;
 }
 
 .start-btn {
@@ -68,14 +71,14 @@ body {
     font-size: 1.2rem;
     border: none;
     border-radius: 8px;
-    background: #00b4d8;
+    background: #FFCA0A;
     color: #fff;
     cursor: pointer;
     transition: background 0.2s;
 }
 
 .start-btn:hover {
-    background: #0096c7;
+    background: #ffeca5;
 }
 
 #game-area {
@@ -88,14 +91,30 @@ body {
     flex: 1 1 auto;
 }
 
+
+  #level-title {
+      font-size: 1.6rem;
+      font-weight: bold;
+      margin-bottom: 0.2rem;
+  }
+
 .grid-and-submit {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    gap: 2vw;
     width: 100%;
-    height: 65vh; /* grid area height */
+    height: 65%; /* grid area height */
     flex: 1 1 auto;
+}
+
+.reset-and-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1vw;
 }
 
 #grid {
@@ -114,6 +133,7 @@ body {
     justify-content: center;
     align-content: center;
     gap: 1vw;
+    margin-bottom: 0.7rem;
     /* JS should set grid-template-columns/rows to match level size */
 }
 
@@ -142,12 +162,11 @@ body {
 .grid-cell.pollution { background: #9d4dcc; }
 
 #submit-btn {
-    margin-left: 1.2rem;
     padding: 0.7rem 1.2rem;
     font-size: 1rem;
     border-radius: 8px;
-    background: #00b4d8;
-    color: #fff;
+    background: none !important; /* Override any background */
+    color: inherit;  /* Changed */
     border: none;
     cursor: pointer;
     transition: background 0.2s;
@@ -157,23 +176,52 @@ body {
     white-space: nowrap;
 }
 
+/* Remove or override the hover style as well */
 #submit-btn:hover {
-    background: #0096c7;
+    background: none; /* Changed */
+}
+
+#reset-btn {
+    padding: 0.7rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    background: none !important; /* Override any background */
+    color: inherit;  /* Changed */
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    align-self: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    height: auto;
+    white-space: nowrap;
+}
+
+.submit-label {
+    margin-top: 0.4rem;
+    font-size: 1rem;
+    text-align: center;
+    pointer-events: none;
+    user-select: none;
+    width: 100%;              /* Ensure label takes full width of parent */
+    display: block;           /* Make sure it's a block for centering */
 }
 
 .draggable-controls {
     display: flex;
+    flex-wrap: wrap;           /* Allow wrapping */
     gap: 1rem;
     justify-content: center;
-    margin-top: 1.2rem;
-    margin-bottom: 0.5rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
     width: 100%;
-    flex-wrap: wrap;
+    box-sizing: border-box;    /* Prevent overflow from padding */
+    overflow-x: auto;          /* Allow horizontal scroll if really needed */
+    max-width: 100%;           /* Never exceed container */
 }
 
 .draggable {
     background: #fff;
-    border: 2px solid #00b4d8;
+    border: 2px solid #FFCA0A;
     border-radius: 10px;
     padding: 0.5rem 1.2rem;
     cursor: grab;
@@ -193,9 +241,9 @@ body {
 .submit-and-result {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center;      /* Ensure children are centered horizontally */
     justify-content: center;
-    margin-left: 1.2rem;
+    padding-left: 0.7rem;
 }
 
 #result {
@@ -210,6 +258,99 @@ body {
     padding: 0.5rem 0.8rem;
     min-width: 90px;
     box-sizing: border-box;
+}
+
+.icon-btn {
+    background: #fff7c2; /* Cream/Banana color */
+    border: none;
+    border-radius: 50%;
+    width: 7vw;
+    min-width: 56px;
+    max-width: 90px;
+    aspect-ratio: 1 / 1;      /* <-- Add this line */
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.18s, transform 0.18s cubic-bezier(.4,2,.6,1);
+    outline: none;
+    position: relative;
+    padding: 0;
+}
+
+button.icon-btn {
+    background: #fff7c2 !important;
+    border-radius: 50% !important;
+}
+
+.icon-btn .submit-icon {
+    width: 2.8vw;
+    height: 2.8vw;
+    min-width: 28px;
+    min-height: 28px;
+    max-width: 44px;
+    max-height: 44px;
+    transition: transform 0.18s cubic-bezier(.4,2,.6,1);
+    display: block;
+    margin: 0 auto;
+}
+
+.icon-btn:hover .submit-icon {
+    transform: scale(1.18);
+}
+
+.icon-btn:not(:hover) .submit-icon {
+    transform: scale(1);
+}
+
+.icon-btn.spin .submit-icon {
+    animation: spin 0.7s linear;
+}
+
+@keyframes spin {
+    0% { transform: scale(1.18) rotate(0deg);}
+    100% { transform: scale(1.18) rotate(360deg);}
+}
+
+.icon-btn .reset-icon {
+    width: 2.8vw;
+    height: 2.8vw;
+    min-width: 28px;
+    min-height: 28px;
+    max-width: 44px;
+    max-height: 44px;
+    display: block;
+    margin: 0 auto;
+    transition: transform 0.18s cubic-bezier(.4,2,.6,1);
+}
+
+.icon-btn:hover .reset-icon {
+    transform: scale(1.18);
+}
+
+.icon-btn:not(:hover) .reset-icon {
+    transform: scale(1);
+}
+
+.icon-btn.spin .reset-icon {
+    animation: spin-reset 0.7s linear;
+}
+
+@keyframes spin-reset {
+    0% { transform: scale(1.18) rotate(0deg);}
+    100% { transform: scale(1.18) rotate(-360deg);}
+}
+
+.submit-label {
+    margin-top: 0.4rem;
+    font-size: 1rem;
+    text-align: center;
+    pointer-events: none;
+    user-select: none;
+    width: 100%;              /* Ensure label takes full width of parent */
+    display: block;           /* Make sure it's a block for centering */
 }
 
 /* Responsive adjustments */
@@ -254,11 +395,17 @@ body {
         min-height: 80px;
         width: 98vw;
         height: 40vw;
+        margin-bottom: 0.4rem;
     }
     .grid-cell {
         font-size: 0.8rem;
     }
     .draggable-controls {
         gap: 0.3rem;
+        margin-top: 0.1rem;
+        margin-bottom: 0.1rem;
+    }
+    .game-title {
+        margin-bottom: 0.4rem;
     }
 }

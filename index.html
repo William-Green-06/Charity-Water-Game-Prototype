@@ -13,14 +13,24 @@
     </header>
     <main>
         <div class="game-container">
-            <h1 class="game-title">Puzzle Game</h1>
+            <h1 class="game-title">Flow it On</h1>
             <button class="start-btn">Start Game</button>
             <div id="game-area" style="display:none;">
+                <span id="level-title">Level 1</span>
                 <div class="grid-and-submit">
+                    <div class="reset-and-result">
+                        <button id="reset-btn" class="icon-btn">
+                            <img src="assets/ui/reset-icon.svg" alt="Reset" class="reset-icon" />
+                        </button>
+                        <div class="reset-label">Reset</div>
+                    </div>
                     <div id="grid"></div>
                     <div class="submit-and-result">
-                        <button id="submit-btn">Submit</button>
-                        <div id="result"></div>
+                        <button id="submit-btn" class="icon-btn">
+                            <img src="assets/ui/charity_icon.png" alt="Submit" class="submit-icon" />
+                        </button>
+                        <div class="submit-label">Submit</div>
+                        <div id="submit-result"></div>
                     </div>
                 </div>
                 <div id="controls" class="draggable-controls">

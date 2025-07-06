@@ -11,6 +11,18 @@ document.querySelector('.start-btn').addEventListener('click', async () => {
     renderGrid(level);
 });
 
+// Reset does the same thing as start until there's logic for multiple levels.
+document.querySelector('.reset-btn').addEventListener('click', async () => {
+    document.querySelector('.reset-btn').style.display = 'none';
+    document.getElementById('game-area').style.display = 'flex';
+
+    // Example: Load grid config from JSON
+    const response = await fetch('assets/levels/lvl_1.json');
+    const level = await response.json();
+    currentLevel = level;
+    renderGrid(level);
+});
+
 // Make pieces draggable
 document.querySelectorAll('.draggable').forEach(piece => {
     piece.addEventListener('dragstart', function(e) {
@@ -217,3 +229,18 @@ function evaluateLevel() {
         resultDiv.textContent = 'Fail';
     }
 }
+
+document.getElementById('submit-btn').addEventListener('click', function() {
+    const btn = this;
+    btn.classList.remove('spin'); // Reset if already spinning
+    void btn.offsetWidth; // Force reflow for restart
+    btn.classList.add('spin');
+});
+
+document.getElementById('reset-btn').addEventListener('click', function() {
+    const btn = this;
+    btn.classList.remove('spin');
+    void btn.offsetWidth; // Force reflow for restart
+    btn.classList.add('spin');
+    // ...reset logic...
+});
