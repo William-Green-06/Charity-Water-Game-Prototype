@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function renderGrid(level) {
     const grid = document.getElementById('grid');
     grid.innerHTML = '';
-    grid.style.gridTemplateColumns = `repeat(${level.width}, 40px)`;
-    grid.style.gridTemplateRows = `repeat(${level.height}, 40px)`;
+    grid.style.gridTemplateColumns = `repeat(${level.width}, 1fr)`;
+    grid.style.gridTemplateRows = `repeat(${level.height}, 1fr)`;
 
     for (let y = 0; y < level.height; y++) {
         for (let x = 0; x < level.width; x++) {

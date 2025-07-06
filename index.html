@@ -16,7 +16,13 @@
             <h1 class="game-title">Puzzle Game</h1>
             <button class="start-btn">Start Game</button>
             <div id="game-area" style="display:none;">
-                <div id="grid"></div>
+                <div class="grid-and-submit">
+                    <div id="grid"></div>
+                    <div class="submit-and-result">
+                        <button id="submit-btn">Submit</button>
+                        <div id="result"></div>
+                    </div>
+                </div>
                 <div id="controls" class="draggable-controls">
                     <div class="draggable" draggable="true" data-type="down">Down</div>
                     <div class="draggable" draggable="true" data-type="down-left">Down-Left</div>
@@ -24,8 +30,6 @@
                     <div class="draggable" draggable="true" data-type="filter">Filter</div>
                     <div class="draggable" draggable="true" data-type="remove">Remove</div>
                 </div>
-                <button id="submit-btn">Submit</button>
-                <div id="result"></div>
             </div>
         </div>
     </main>
