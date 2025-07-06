@@ -101,6 +101,7 @@ body {
 .grid-cell.end { background: #90ee90; }
 .grid-cell.obstacle { background: #aaa; }
 .grid-cell.filter { background: #48cae4; }
+.grid-cell.pollution { background: #9d4dcc; }
 
 .draggable-controls {
     display: flex;

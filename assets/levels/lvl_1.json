@@ -3,8 +3,8 @@
   "height": 4,
   "cells": [
     [null, "start", null],
-    [null, "obstacle", null],
-    [null, null, null],
+    [null, "pollution", null],
+    [null, null, "obstacle"],
     [null, null, "end"]
   ]
 }
