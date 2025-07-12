@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: Georgia, serif;
     background: #FAF7F0;
     min-height: 100vh;
 }
@@ -17,22 +17,59 @@ html, body {
 .main-header {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between; /* Push children to edges */
     background: #fff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     color: #fff;
-    padding: 0 1rem;
-    min-height: 80px;   /* Increased height */
-    height: 80px;       /* Increased height */
+    padding: 0 1.5vw;
+    min-height: 80px;
+    height: 80px;
+    width: 100vw;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.main-header a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    /* Remove default link styling */
+    text-decoration: none;
 }
 
 .logo {
-    height: 100%;
+    max-height: 60px;
     width: auto;
-    max-width: 375px;   /* Allow a bit wider logo */
-    margin-right: 1rem;
+    height: auto;
     display: block;
-    max-height: none;
+}
+
+.donate-btn {
+    background: #FFCA0A;
+    color: #fff;
+    font-weight: bold;
+    padding: 0.7em 1.6em;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    transition: background 0.2s, color 0.2s;
+    border: none;
+    outline: none;
+    display: inline-block;
+    max-height: 48px;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+    padding: 0px 4px;
+}
+
+.donate-btn:hover,
+.donate-btn:focus,
+.donate-btn:active {
+    background: #ffeca5;
+    color: #fff;
+    text-decoration: none;
 }
 
 /* Center logo on small screens */
