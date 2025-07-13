@@ -1,6 +1,10 @@
 let currentLevel = null; // Store the loaded level for updates
 let originalLevel = null; // Store the original level for resets
 
+// SFX
+const popSound = new Audio('assets/sfx/pop.wav');
+const removeSound = new Audio('assets/sfx/trash.wav');
+
 document.querySelector('.start-btn').addEventListener('click', async () => {
     document.querySelector('.start-btn').style.display = 'none';
     document.getElementById('game-area').style.display = 'flex';
@@ -28,6 +32,9 @@ document.getElementById('reset-btn').addEventListener('click', function() {
         currentLevel = JSON.parse(JSON.stringify(originalLevel));
         renderGrid(currentLevel);
     }
+
+    removeSound.currentTime = 0;
+    removeSound.play();
 });
 
 // Make pieces draggable
@@ -109,6 +116,8 @@ function handleDropOnCell(e) {
             cellType === 'filter'
         ) {
             currentLevel.cells[y][x] = null;
+            removeSound.currentTime = 0;
+            removeSound.play();
             renderGrid(currentLevel);
         } else if (
             cellType === 'filter-on-pollution' ||
@@ -118,6 +127,8 @@ function handleDropOnCell(e) {
         ) {
             // Restore pollution if a piece-on-pollution is removed
             currentLevel.cells[y][x] = 'pollution';
+            removeSound.currentTime = 0;
+            removeSound.play();
             renderGrid(currentLevel);
         }
         return;
@@ -126,12 +137,16 @@ function handleDropOnCell(e) {
     // Only allow filter to overwrite pollution and mark it
     if (cellType === 'pollution' && pieceType === 'filter') {
         currentLevel.cells[y][x] = 'filter-on-pollution';
+        popSound.currentTime = 0; // rewind to start
+        popSound.play();
         renderGrid(currentLevel);
         return;
     }
     // Allow other pieces to overwrite pollution and mark them
     if (cellType === 'pollution' && pieceType !== 'filter') {
         currentLevel.cells[y][x] = pieceType + '-on-pollution';
+        popSound.currentTime = 0;
+        popSound.play();
         renderGrid(currentLevel);
         return;
     }
@@ -145,6 +160,10 @@ function handleDropOnCell(e) {
         cellType === null
     ) {
         currentLevel.cells[y][x] = pieceType;
+        if (pieceType !== 'remove') {
+            popSound.currentTime = 0;
+            popSound.play();
+        }
         renderGrid(currentLevel);
     }
 }
