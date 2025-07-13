@@ -16,6 +16,12 @@ const LEVELS = {
     ]
 };
 
+const WATER_FACTS = {
+    0: "703 million people in the world live without clean water.",
+    1: "Diseases from dirty water kill more people every year than all forms of violence, including war.",
+    2: "Every day, women and girls around the world spend an estimated 200 million hours collecting water."
+};
+
 let currentDifficulty = null;
 let currentLevelIndex = 0;
 
@@ -289,14 +295,35 @@ function showVictoryModal() {
     // Confetti (using canvas-confetti)
     if (window.confetti) {
         const canvas = document.getElementById('confetti-canvas');
-        canvas.width = modal.offsetWidth;
-        canvas.height = modal.offsetHeight;
-        const myConfetti = window.confetti.create(canvas, { resize: true, useWorker: true });
-        myConfetti({
+        if (!canvas._confettiInitialized) {
+            canvas.width = modal.offsetWidth;
+            canvas.height = modal.offsetHeight;
+            window.myConfetti = window.confetti.create(canvas, { resize: true, useWorker: true });
+            canvas._confettiInitialized = true;
+        }
+        window.myConfetti({
             particleCount: 120,
             spread: 90,
             origin: { y: 0.6 }
         });
+    }
+
+    // Show "One more!" after level 2 of any difficulty
+    const extraMsg = document.getElementById('victory-extra-message');
+    if (currentLevelIndex === 1) { // Level 2 (zero-based)
+        extraMsg.textContent = "One more!";
+        extraMsg.style.display = "block";
+    } else {
+        extraMsg.style.display = "none";
+    }
+
+    // Show water fact for levels 1, 2, 3 (indexes 0, 1, 2)
+    const factDiv = document.getElementById('victory-water-fact');
+    if (WATER_FACTS.hasOwnProperty(currentLevelIndex)) {
+        factDiv.textContent = WATER_FACTS[currentLevelIndex];
+        factDiv.style.display = "block";
+    } else {
+        factDiv.style.display = "none";
     }
 }
 
@@ -305,6 +332,8 @@ function hideVictoryModal() {
     const modal = document.getElementById('victory-modal');
     modal.classList.remove('active');
     setTimeout(() => { modal.style.display = 'none'; }, 400);
+    document.getElementById('victory-extra-message').style.display = "none";
+    document.getElementById('victory-water-fact').style.display = "none";
 }
 
 // Next Level button closes modal for now
