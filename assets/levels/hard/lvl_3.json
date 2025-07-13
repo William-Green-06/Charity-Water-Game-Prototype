@@ -1,0 +1,13 @@
+{
+  "width": 3,
+  "height": 7,
+  "cells": [
+    [null, "start", null],
+    [null, "pollution", null],
+    [null, null, null],
+    ["obstacle", "obstacle", null],
+    [null, "pollution", null],
+    [null, null, null],
+    ["end", null, null]
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "width": 2,
+  "height": 4,
+  "cells": [
+    ["start", null],
+    [null, null],
+    [null, null],
+    [null, "end"]
+  ]
+}

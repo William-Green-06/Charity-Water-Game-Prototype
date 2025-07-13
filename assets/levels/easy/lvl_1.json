@@ -1,0 +1,9 @@
+{
+  "width": 1,
+  "height": 3,
+  "cells": [
+    ["start"],
+    [null],
+    ["end"]
+  ]
+}

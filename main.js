@@ -1,3 +1,24 @@
+const LEVELS = {
+    easy: [
+        'assets/levels/easy/lvl_1.json',
+        'assets/levels/easy/lvl_2.json',
+        'assets/levels/easy/lvl_3.json',
+    ],
+    medium: [
+        'assets/levels/medium/lvl_1.json',
+        'assets/levels/medium/lvl_2.json',
+        'assets/levels/medium/lvl_3.json',
+    ],
+    hard: [
+        'assets/levels/hard/lvl_1.json',
+        'assets/levels/hard/lvl_2.json',
+        'assets/levels/hard/lvl_3.json',
+    ]
+};
+
+let currentDifficulty = null;
+let currentLevelIndex = 0;
+
 let currentLevel = null; // Store the loaded level for updates
 let originalLevel = null; // Store the original level for resets
 
@@ -5,17 +26,17 @@ let originalLevel = null; // Store the original level for resets
 const popSound = new Audio('assets/sfx/pop.wav');
 const removeSound = new Audio('assets/sfx/trash.wav');
 
-document.querySelector('.start-btn').addEventListener('click', async () => {
-    document.querySelector('.start-btn').style.display = 'none';
-    document.getElementById('game-area').style.display = 'flex';
+// document.querySelector('.start-btn').addEventListener('click', async () => {
+//     document.querySelector('.start-btn').style.display = 'none';
+//     document.getElementById('game-area').style.display = 'flex';
 
-    // Example: Load grid config from JSON
-    const response = await fetch('assets/levels/lvl_1.json');
-    const level = await response.json();
-    currentLevel = level;
-    originalLevel = JSON.parse(JSON.stringify(level)); // Deep copy for reset
-    renderGrid(level);
-});
+//     // Example: Load grid config from JSON
+//     const response = await fetch('assets/levels/lvl_1.json');
+//     const level = await response.json();
+//     currentLevel = level;
+//     originalLevel = JSON.parse(JSON.stringify(level)); // Deep copy for reset
+//     renderGrid(level);
+// });
 
 // Reset does the same thing as start until there's logic for multiple levels.
 document.getElementById('reset-btn').addEventListener('click', function() {
@@ -287,7 +308,17 @@ function hideVictoryModal() {
 }
 
 // Next Level button closes modal for now
-document.getElementById('next-level-btn').addEventListener('click', hideVictoryModal);
+document.getElementById('next-level-btn').addEventListener('click', async function() {
+    currentLevelIndex++;
+    if (currentLevelIndex < LEVELS[currentDifficulty].length) {
+        hideVictoryModal();
+        await loadLevel(currentDifficulty, currentLevelIndex);
+    } else {
+        // Show final victory modal
+        hideVictoryModal();
+        showFinalVictoryModal();
+    }
+});
 
 document.getElementById('submit-btn').addEventListener('click', function() {
     const btn = this;
@@ -310,4 +341,37 @@ document.getElementById('reset-btn').addEventListener('click', function() {
         currentLevel = JSON.parse(JSON.stringify(originalLevel));
         renderGrid(currentLevel);
     }
+});
+
+document.querySelectorAll('.difficulty-btn').forEach(btn => {
+    btn.addEventListener('click', async function() {
+        currentDifficulty = this.dataset.difficulty;
+        currentLevelIndex = 0;
+        document.querySelector('.start-screen').style.display = 'none';
+        document.getElementById('game-area').style.display = 'flex';
+        await loadLevel(currentDifficulty, currentLevelIndex);
+    });
+});
+
+async function loadLevel(difficulty, index) {
+    const url = LEVELS[difficulty][index];
+    const response = await fetch(url);
+    const level = await response.json();
+    currentLevel = level;
+    originalLevel = JSON.parse(JSON.stringify(level));
+    renderGrid(level);
+    document.getElementById('level-title').textContent = `Level ${index + 1}`;
+}
+
+function showFinalVictoryModal() {
+    const modal = document.getElementById('final-victory-modal');
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+document.getElementById('back-to-menu-btn').addEventListener('click', function() {
+    document.getElementById('final-victory-modal').classList.remove('active');
+    setTimeout(() => { document.getElementById('final-victory-modal').style.display = 'none'; }, 400);
+    document.getElementById('game-area').style.display = 'none';
+    document.querySelector('.start-screen').style.display = 'flex';
 });
